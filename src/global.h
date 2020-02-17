@@ -9,6 +9,7 @@ struct Config{
 	bool verbose			= true;
 	uint8_t logLevel		= 3;
 	QString logFile			= "/tmp/mystats.log";
+	QString version;
 };
 
 namespace app {

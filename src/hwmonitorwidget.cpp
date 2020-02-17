@@ -49,6 +49,11 @@ void HWMonitorWidget::paintEvent(QPaintEvent *event)
 	p.setFont(font);
 	p.drawText(155,50,100,15,Qt::AlignVCenter,m_pHWMonitor->getData().date);
 
+	p.setPen(Qt::lightGray);
+	font.setPixelSize(m_defFontSize);
+	p.setFont(font);
+	p.drawText( 200, 0, 70, 15, Qt::AlignVCenter, QString("v%1").arg( app::conf.version ) );
+
 	/*
 	 * TOP
 	*/
@@ -72,7 +77,7 @@ void HWMonitorWidget::paintEvent(QPaintEvent *event)
 		p.drawRect(m_xParamOffset,y + 2,this->width() - m_xParamOffset - 5,14);
 	}
 	drawParam(p,m_xParamOffset,y,"SWAP:");
-	m_swapParam.clear = ( m_pHWMonitor->getData().swap >= 0 )?true:false;
+	m_swapParam.clear = ( m_pHWMonitor->getData().swap >= 0.0 ) ? true : false;
 	m_swapParam.y = y;
 	drawBar(p,m_xVallOffset,y,m_pHWMonitor->getData().swap,15);
 	drawValue(p,m_xVallOffset + 80,y,m_pHWMonitor->getData().swapUsed + " / " + m_pHWMonitor->getData().swapTotal);

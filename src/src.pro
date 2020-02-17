@@ -39,18 +39,18 @@ SOURCES += main.cpp\
     hwmonitorwidget.cpp \
     hwmonitor.cpp \
     global.cpp \
-    ../../../HomeNET/client.cpp \
-    ../../../HomeNET/myproto.cpp \
-    ../../../HomeNET/searcher.cpp \
+#    ../../../HomeNET/client.cpp \
+#    ../../../HomeNET/myproto.cpp \
+#    ../../../HomeNET/searcher.cpp \
     myfunctions.cpp
 
 HEADERS  += mainwindow.h \
     hwmonitorwidget.h \
     hwmonitor.h \
     global.h \
-    ../../../HomeNET/client.h \
-    ../../../HomeNET/myproto.h \
-    ../../../HomeNET/searcher.h \
+#    ../../../HomeNET/client.h \
+#    ../../../HomeNET/myproto.h \
+#    ../../../HomeNET/searcher.h \
     myfunctions.h
 
 TRANSLATIONS = lang/ru_RU.ts
@@ -58,6 +58,10 @@ TRANSLATIONS = lang/ru_RU.ts
 RESOURCES += \
     resources.qrc
 
+DISTFILES += \
+    gitversion.pri
+
+exists(./gitversion.pri):include(./gitversion.pri)
 exists(./myLibs.pri):include(./myLibs.pri)
 
 # Default rules for deployment.

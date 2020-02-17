@@ -9,7 +9,7 @@ The application for monitoring computer resources
 * Bug fixes
 * make on QT libs
 
-![MyStats 1.0](C++_QT/v1_0.png)
+![MyStats 1.0](images/v1_0.png)
 
 **=== MyStats v0.3 =========**
 

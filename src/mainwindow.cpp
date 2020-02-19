@@ -40,14 +40,21 @@ MainWindow::MainWindow(QWidget *parent)
 		msgBox.setWindowFlags( Qt::ToolTip );
 		int ret = msgBox.exec();
 		QString dev;
+		QProcess proc;
 		switch (ret) {
-			case QMessageBox::Open: QProcess::startDetached("xdg-open " + path); break;
+			case QMessageBox::Open: mf::startDetached("xdg-open", QStringList()<<path); break;
 			case QMessageBox::Discard:
 				dev = name.left( name.length() - 1 );
-				QProcess::startDetached("udisks --unmount " + name);
-				QProcess::startDetached("udisksctl unmount -b " + name);
-				QProcess::startDetached("udisks --detach " + dev);
-				QProcess::startDetached("udisksctl power-off -b " + dev);
+				proc.start( "sync" );
+				proc.waitForFinished();
+				proc.start( "udisks", QStringList()<<"--umount"<<name );
+				proc.waitForFinished();
+				proc.start( "udisksctl", QStringList()<<"unmount"<<"-b"<<name );
+				proc.waitForFinished();
+				proc.start( "udisks", QStringList()<<"--detach"<<dev );
+				proc.waitForFinished();
+				proc.start( "udisksctl", QStringList()<<"power-off"<<"-b"<<dev );
+				proc.waitForFinished();
 			break;
 			default: break;
 		}

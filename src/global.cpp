@@ -46,4 +46,22 @@ namespace app {
 		return ret;
 	}
 
+	void loadSettings()
+	{
+		QSettings settings("MySoft","MyStats");
+
+		app::conf.logFile = settings.value("MAIN/logFile",app::conf.logFile).toString();
+		app::conf.logLevel = settings.value("MAIN/logLevel",app::conf.logLevel).toUInt();
+
+		if( settings.allKeys().size() == 0 ) app::saveSettings();
+	}
+
+	void saveSettings()
+	{
+		QSettings settings("MySoft","MyStats");
+		settings.clear();
+		settings.setValue("MAIN/logFile",app::conf.logFile);
+		settings.setValue("MAIN/logLevel",app::conf.logLevel);
+	}
+
 }

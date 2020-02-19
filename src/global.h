@@ -9,9 +9,9 @@ struct Config{
 	bool verbose			= true;
 	uint8_t logLevel		= 3;
 #ifdef __linux__
-	QString logFile						= "/tmp/MyStats.log";
+	QString logFile			= "/tmp/MyStats.log";
 #elif _WIN32
-	QString logFile						= QDir::homePath() + "/MyStats.log";
+	QString logFile			= QDir::homePath() + "/MyStats.log";
 #endif
 	QString version;
 };
@@ -21,6 +21,8 @@ namespace app {
 
 	void setLog(const uint8_t logLevel, const QString &mess);
 	bool parsArgs(int argc, char *argv[]);
+	void loadSettings();
+	void saveSettings();
 }
 
 #endif // GLOBAL_H

@@ -197,15 +197,11 @@ bool HWMonitorWidget::mouseClickToObject()
 	}
 	if( m_swapParam.clear ){
 		if( chkHoverSwap( m_swapParam.y ) ){
-			//QProcess::startDetached("pkexec \"swapoff -a && swapon -a\" || pkexec \"swapspace -e\"");
-			//mf::startDetached();
-			//if( !mf::startDetached( "pkexec", QStringList() << "'swapspace -e'" ) ){
 			if( mf::startDetached( "pkexec", QStringList() << "swapoff" << "-a" ) ){
 				QTimer::singleShot( 3000, this, [this](){
 					mf::startDetached( "pkexec", QStringList() << "swapon" << "-a" );
 				} );
 			}
-			//}
 			m_swapParam.hover = false;
 			find = true;
 		}

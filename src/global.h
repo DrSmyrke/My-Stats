@@ -8,7 +8,11 @@ struct Config{
 	bool showData			= true;
 	bool verbose			= true;
 	uint8_t logLevel		= 3;
-	QString logFile			= "/tmp/mystats.log";
+#ifdef __linux__
+	QString logFile						= "/tmp/MyStats.log";
+#elif _WIN32
+	QString logFile						= QDir::homePath() + "/MyStats.log";
+#endif
 	QString version;
 };
 
@@ -16,6 +20,7 @@ namespace app {
 	extern Config conf;
 
 	void setLog(const uint8_t logLevel, const QString &mess);
+	bool parsArgs(int argc, char *argv[]);
 }
 
 #endif // GLOBAL_H

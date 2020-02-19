@@ -126,7 +126,13 @@ void HWMonitorWidget::paintEvent(QPaintEvent *event)
 	/*
 	 * DISKS
 	*/
+
+	p.setPen(QPen(QColor(138,186,56)));
+	//p.drawRect(m_xParamOffset,y+7,45,2);
+	//drawValue(p,m_xVallOffset,y,iface.name);
+	p.drawRect(m_xParamOffset, y+7, ( this->width() - 7 - m_xParamOffset ) ,2);
 	y += m_defFontSize + m_yOffset;
+
 	for(auto disk:m_pHWMonitor->getData().disks){
 		QString name = disk.mount;
 		if( name != "/" ){

@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QNetworkAccessManager>
 #include <QTimer>
 #include "hwmonitorwidget.h"
 #include "global.h"
@@ -19,7 +18,6 @@ private slots:
 private:
 	HWMonitorWidget* m_pHWMonitorWidget;
 	QTimer *m_pTimer;
-	QNetworkAccessManager* m_pManager;
 
 	bool m_mouseClick = false;
 	bool m_mouseMove = false;

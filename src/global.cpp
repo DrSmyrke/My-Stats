@@ -2,6 +2,8 @@
 #include <QIODevice>
 #include <QDateTime>
 #include <QSettings>
+#include <QNetworkAccessManager>
+#include <QUrlQuery>
 
 namespace app {
 	Config conf;
@@ -36,11 +38,13 @@ namespace app {
 					printf("Usage: %s [OPTIONS]\n"
 							"  -l <FILE>    log file\n"
 							"  -v    Verbose output\n"
+							"  --version	print current version\n"
 							"\n", argv[0]);
 					ret = false;
 				}
 				if(QString(argv[i]) == "-l") app::conf.logFile = QString(argv[++i]);
 				if(QString(argv[i]) == "-v") app::conf.verbose = true;
+				if(QString(argv[i]) == "--version") printf( "%s\n", app::conf.version.toUtf8().data() );
 			}
 		}
 		return ret;
@@ -68,6 +72,29 @@ namespace app {
 		settings.setValue("MAIN/targetUrl",app::conf.targetUrl);
 		settings.setValue("MAIN/logLevel",app::conf.logLevel);
 		settings.setValue("MAIN/sendInterval",app::conf.sendInterval);
+	}
+
+	void sendData(const SendData &data)
+	{
+		QNetworkAccessManager manager;
+		QUrl url( app::conf.targetUrl );
+		QNetworkRequest request( url );
+		QString auth = QString( "%1:%2" ).arg( "api" ).arg( app::conf.apiKey );
+		request.setRawHeader( "Authorization", "Basic " + auth.toUtf8().toBase64() );
+		request.setHeader( QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded" );
+
+		QUrlQuery params;
+		params.addQueryItem( "cpu", QString::number( data.cpu ) );
+		params.addQueryItem( "mem", QString::number( data.mem ) );
+		params.addQueryItem( "memTotal", QString::number( data.memTotal ) );
+		params.addQueryItem( "memFree", QString::number( data.memFree ) );
+		params.addQueryItem( "swap", QString::number( data.swap ) );
+		params.addQueryItem( "swapTotal", QString::number( data.swapTotal ) );
+		params.addQueryItem( "swapFree", QString::number( data.swapFree ) );
+		params.addQueryItem( "uptime", data.uptime );
+		//TODO: DISKS
+
+		manager.post( request, params.query().toUtf8() );
 	}
 
 }

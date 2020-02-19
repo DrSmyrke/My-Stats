@@ -61,6 +61,7 @@ namespace app {
 	bool parsArgs(int argc, char *argv[]);
 	void loadSettings();
 	void saveSettings();
+	void sendData(const SendData &data);
 }
 
 #endif // GLOBAL_H

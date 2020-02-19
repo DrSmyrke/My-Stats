@@ -2,10 +2,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QMessageBox>
-#include <QNetworkRequest>
 #include <QProcess>
-#include <QUrl>
-#include <QUrlQuery>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -14,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	m_sendSecCounter	= 0;
 	m_prewWidth			= -1;
 
-	m_pManager = new QNetworkAccessManager( this );
 	m_pTimer = new QTimer(this);
 		m_pTimer->setInterval(250);
 	m_pHWMonitorWidget = new HWMonitorWidget(this);
@@ -126,24 +122,7 @@ void MainWindow::sendStats()
 
 	SendData data = m_pHWMonitorWidget->getSendData();
 
-	QUrl url( app::conf.targetUrl );
-	QNetworkRequest request( url );
-	QString auth = QString( "%1:%2" ).arg( "api" ).arg( app::conf.apiKey );
-	request.setRawHeader( "Authorization", "Basic " + auth.toUtf8().toBase64() );
-	request.setHeader( QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded" );
-
-	QUrlQuery params;
-	params.addQueryItem( "cpu", QString::number( data.cpu ) );
-	params.addQueryItem( "mem", QString::number( data.mem ) );
-	params.addQueryItem( "memTotal", QString::number( data.memTotal ) );
-	params.addQueryItem( "memFree", QString::number( data.memFree ) );
-	params.addQueryItem( "swap", QString::number( data.swap ) );
-	params.addQueryItem( "swapTotal", QString::number( data.swapTotal ) );
-	params.addQueryItem( "swapFree", QString::number( data.swapFree ) );
-	params.addQueryItem( "uptime", data.uptime );
-	//TODO: DISKS
-
-	m_pManager->post( request, params.query().toUtf8() );
+	app::sendData( data );
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

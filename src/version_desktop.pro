@@ -25,7 +25,7 @@ OBJECTS_DIR         = ../build/obj/$${CONFIGURATION}
 MOC_DIR             = ../build/$${CONFIGURATION}
 RCC_DIR             = ../build/rcc
 UI_DIR              = ../build/ui
-DESTDIR             = ../bin/$${TARGET}
+DESTDIR             = ../bin
 
 win32|win64{
     RC_FILE=  index.rc
@@ -34,7 +34,7 @@ win32|win64{
 }
 QMAKE_CXXFLAGS += "-std=c++11"
 
-SOURCES += main.cpp\
+SOURCES += main_desktop.cpp\
         mainwindow.cpp \
     hwmonitorwidget.cpp \
     hwmonitor.cpp \

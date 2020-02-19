@@ -44,7 +44,10 @@ namespace app {
 				}
 				if(QString(argv[i]) == "-l") app::conf.logFile = QString(argv[++i]);
 				if(QString(argv[i]) == "-v") app::conf.verbose = true;
-				if(QString(argv[i]) == "--version") printf( "%s\n", app::conf.version.toUtf8().data() );
+				if(QString(argv[i]) == "--version"){
+					printf( "%s\n", app::conf.version.toUtf8().data() );
+					ret = false;
+				}
 			}
 		}
 		return ret;

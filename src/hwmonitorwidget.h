@@ -30,6 +30,7 @@ class HWMonitorWidget : public QWidget
 public:
 	explicit HWMonitorWidget(QWidget *parent = 0);
 	bool mouseClickToObject();
+	SendData getSendData(){ return m_pHWMonitor->getSendData(); }
 public slots:
 	void slot_update();
 signals:

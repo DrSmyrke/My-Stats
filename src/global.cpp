@@ -51,7 +51,10 @@ namespace app {
 		QSettings settings("MySoft","MyStats");
 
 		app::conf.logFile = settings.value("MAIN/logFile",app::conf.logFile).toString();
+		app::conf.apiKey = settings.value("MAIN/apiKey",app::conf.apiKey).toString();
+		app::conf.targetUrl = settings.value("MAIN/targetUrl",app::conf.targetUrl).toString();
 		app::conf.logLevel = settings.value("MAIN/logLevel",app::conf.logLevel).toUInt();
+		app::conf.sendInterval = settings.value("MAIN/sendInterval",app::conf.sendInterval).toInt();
 
 		if( settings.allKeys().size() == 0 ) app::saveSettings();
 	}
@@ -61,7 +64,10 @@ namespace app {
 		QSettings settings("MySoft","MyStats");
 		settings.clear();
 		settings.setValue("MAIN/logFile",app::conf.logFile);
+		settings.setValue("MAIN/apiKey",app::conf.apiKey);
+		settings.setValue("MAIN/targetUrl",app::conf.targetUrl);
 		settings.setValue("MAIN/logLevel",app::conf.logLevel);
+		settings.setValue("MAIN/sendInterval",app::conf.sendInterval);
 	}
 
 }

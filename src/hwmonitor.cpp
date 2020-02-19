@@ -59,6 +59,8 @@ void HWMonitor::getUptime()
 	m_data.uptime += (h<10)? "0" + QString::number(h):QString::number(h);m_data.uptime += ":";
 	m_data.uptime += (m<10)? "0" + QString::number(m):QString::number(m);m_data.uptime += ":";
 	m_data.uptime += (s<10)? "0" + QString::number(s):QString::number(s);
+
+	m_sendData.uptime = buff;
 }
 
 void HWMonitor::getCpu()
@@ -89,6 +91,7 @@ void HWMonitor::getCpu()
 	diff_total = total - diff_total;
 
 	m_data.cpu = (float)( 1000*(diff_total-diff_idle)/diff_total+5 )/10;
+	m_sendData.cpu = m_data.cpu;
 
 	diff_idle = idle;
 	diff_total = total;
@@ -107,17 +110,6 @@ void HWMonitor::getMem()
 		app::setLog( 2, QString("/proc/meminfo is NOT open [%1]").arg( fmem.errorString() ) );
 		return;
 	}
-
-//	FILE* fmem = fopen("/proc/meminfo","r");
-//	if( fmem ){
-//		char ch;
-//		uint8_t n;
-//		while( (n = fread(&ch,1,1,fmem) ) > 0 ) buffmem.append(ch);
-//		fclose(fmem);
-//	}else{
-//		return;
-//	}
-
 
 #if __WORDSIZE == 64
 	uint64_t memTotal = 0;
@@ -149,18 +141,17 @@ void HWMonitor::getMem()
 	m_data.swapUsed = mf::getSize( swapTotal - swapFree );
 	m_data.swap = (float)(swapTotal - swapFree) / ( (float)swapTotal / 100.0 );
 
+	m_sendData.mem			= m_data.mem;
+	m_sendData.memTotal		= memTotal;
+	m_sendData.memFree		= memFree;
+	m_sendData.swap			= m_data.swap;
+	m_sendData.swapTotal	= swapTotal;
+	m_sendData.swapFree		= swapFree;
+
 	// SWAPS
 	//if( app::conf.swapMode == swap_mode_static ){
 		m_data.swaps.clear();
-		QByteArray buff;
-		QFile f("/proc/meminfo");
-		if( !f.exists() ) return;
-		if( f.open( QIODevice::ReadOnly ) ){
-			buff = f.readAll();
-			f.close();
-		}
-
-		for(auto str:buff.split('\n')){
+		for(auto str:buffmem.split('\n')){
 			str.replace("	", QByteArray(" "));
 			while( str.contains( QByteArray("  ") ) ) str.replace("  ", QByteArray(" "));
 			auto data = str.split(' ');
@@ -260,6 +251,7 @@ void HWMonitor::getDevs()
 {
 	QByteArray buff;
 	m_data.disks.clear();
+	m_sendData.disks.clear();
 //	FILE* f = fopen("/proc/self/mountinfo","r");
 
 //	if( f ){
@@ -301,5 +293,6 @@ void HWMonitor::getDevs()
 		disk.used = disk.size - disk.avail;
 		disk.usedPrz = (float)disk.used / ( (float)disk.size / 100.0 );
 		m_data.disks.push_back(disk);
+		m_sendData.disks.push_back( disk );
 	}
 }

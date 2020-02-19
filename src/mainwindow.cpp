@@ -2,13 +2,19 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QMessageBox>
+#include <QNetworkRequest>
 #include <QProcess>
+#include <QUrl>
+#include <QUrlQuery>
 
-MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
-	, m_prewWidth(-1)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+	m_tickCounter		= 0;
+	m_secCounter		= 0;
+	m_sendSecCounter	= 0;
+	m_prewWidth			= -1;
 
+	m_pManager = new QNetworkAccessManager( this );
 	m_pTimer = new QTimer(this);
 		m_pTimer->setInterval(250);
 	m_pHWMonitorWidget = new HWMonitorWidget(this);
@@ -29,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 			setWindowAction();
 		}
 	});
-	connect(m_pTimer,&QTimer::timeout,m_pHWMonitorWidget,&HWMonitorWidget::slot_update);
+	connect( m_pTimer, &QTimer::timeout, this, &MainWindow::slot_update );
 	connect(m_pHWMonitorWidget,&HWMonitorWidget::signal_diskClicked,this,[this]( const QString &path, const QString &name ){
 		QMessageBox msgBox(this);
 		msgBox.setText("You are selected device [" + name + "]");
@@ -69,6 +75,23 @@ MainWindow::~MainWindow()
 
 }
 
+void MainWindow::slot_update()
+{
+	m_pHWMonitorWidget->slot_update();
+
+	if( m_tickCounter++ >= ( 1000 / m_pTimer->interval() ) ){
+		m_tickCounter = 0;
+		m_secCounter++;
+		m_sendSecCounter++;
+	}
+
+	if( app::conf.sendInterval == 0 ) return;
+	if( m_sendSecCounter == app::conf.sendInterval ){
+		sendStats();
+		m_sendSecCounter = 0;
+	}
+}
+
 void MainWindow::setWindowAction()
 {
 	if( m_prewWidth < 0 ) return;
@@ -92,6 +115,35 @@ void MainWindow::setWindowAction()
 	}
 
 	//this->move( primaryScreen.x() + primaryScreen.width() - this->width() - 5, primaryScreen.y() + primaryScreen.height() - this->height() - 33 );
+}
+
+void MainWindow::sendStats()
+{
+	if( app::conf.targetUrl.isEmpty() ){
+		app::setLog( 2, "MainWindow::sendStats	conf.targetUrl.isEmpty" );
+		return;
+	}
+
+	SendData data = m_pHWMonitorWidget->getSendData();
+
+	QUrl url( app::conf.targetUrl );
+	QNetworkRequest request( url );
+	QString auth = QString( "%1:%2" ).arg( "api" ).arg( app::conf.apiKey );
+	request.setRawHeader( "Authorization", "Basic " + auth.toUtf8().toBase64() );
+	request.setHeader( QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded" );
+
+	QUrlQuery params;
+	params.addQueryItem( "cpu", QString::number( data.cpu ) );
+	params.addQueryItem( "mem", QString::number( data.mem ) );
+	params.addQueryItem( "memTotal", QString::number( data.memTotal ) );
+	params.addQueryItem( "memFree", QString::number( data.memFree ) );
+	params.addQueryItem( "swap", QString::number( data.swap ) );
+	params.addQueryItem( "swapTotal", QString::number( data.swapTotal ) );
+	params.addQueryItem( "swapFree", QString::number( data.swapFree ) );
+	params.addQueryItem( "uptime", data.uptime );
+	//TODO: DISKS
+
+	m_pManager->post( request, params.query().toUtf8() );
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

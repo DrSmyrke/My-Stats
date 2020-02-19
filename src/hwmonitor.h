@@ -23,22 +23,6 @@ struct Iface{
 #endif
 };
 
-struct Disk{
-	QString name;
-	QString mount;
-	QString fstype;
-#if __WORDSIZE == 64
-	uint64_t size = -1;
-	uint64_t used = 0;
-	uint64_t avail = 0;
-#else
-	uint32_t size = -1;
-	uint32_t used = 0;
-	uint32_t avail = 0;
-#endif
-	float usedPrz = 0;
-};
-
 struct UiData{
 	QString time = "00:00:00";
 	QString uptime = "00:00:00";
@@ -62,10 +46,12 @@ class HWMonitor : public QObject
 public:
 	explicit HWMonitor(QObject *parent = 0);
 	UiData getData() { return m_data; }
+	SendData getSendData() { return m_sendData; }
 public slots:
 	void slot_timer();
 private:
 	UiData m_data;
+	SendData m_sendData;
 
 	void getUptime();
 	void getCpu();

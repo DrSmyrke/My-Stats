@@ -2,7 +2,7 @@
 build-src*
 bin/*
 *build-*
-bin
+bin*
 build
 myfunctions.cpp
 myfunctions.h

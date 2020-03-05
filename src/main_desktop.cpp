@@ -1,8 +1,9 @@
 #include "mainwindow.h"
 #include "version.h"
 #include <QApplication>
-#include <QDir>
+#include <QFile>
 #include <QTranslator>
+#include <QLocale>
 //#include "../../../HomeNET/client.h"
 //#include "../../../HomeNET/searcher.h"
 //#include "../../../HomeNET/myproto.h"

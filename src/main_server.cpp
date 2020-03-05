@@ -1,5 +1,5 @@
 #include <QCoreApplication>
-#include <QDir>
+#include <QFile>
 #include <QTranslator>
 #include <QLocale>
 

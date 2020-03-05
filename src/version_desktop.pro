@@ -58,9 +58,6 @@ TRANSLATIONS = lang/ru_RU.ts
 RESOURCES += \
     resources.qrc
 
-DISTFILES += \
-    gitversion.pri
-
 exists(./gitversion.pri):include(./gitversion.pri)
 exists(./myLibs.pri):include(./myLibs.pri)
 

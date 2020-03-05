@@ -4,6 +4,8 @@
 #include <QLocale>
 #include "global.h"
 #include "core.h"
+#include "version.h"
+
 //#include "../../../HomeNET/client.h"
 //#include "../../../HomeNET/searcher.h"
 //#include "../../../HomeNET/myproto.h"

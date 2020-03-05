@@ -1,4 +1,3 @@
-APP_VER_FIRST   = 1.1
 APP_VER_SECOND  = 0
 
 # Need to discard STDERR so get path to NULL device

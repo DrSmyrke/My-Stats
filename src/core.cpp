@@ -10,11 +10,20 @@ Core::Core(QObject *parent) : QObject(parent)
 	m_pTimer = new QTimer( this );
 		m_pTimer->setInterval(250);
 
-	connect( m_pTimer, &QTimer::timeout, this, &Core::slot_update );
+		connect( m_pTimer, &QTimer::timeout, this, &Core::slot_update );
+}
+
+Core::~Core()
+{
+	app::setLog( 1, "Core::deinititialize" );
+	if( m_pTimer->isActive() ){
+		m_pTimer->stop();
+	}
 }
 
 void Core::init()
 {
+	app::setLog( 1, "Core::inititialize" );
 	m_pTimer->start();
 }
 

@@ -15,7 +15,6 @@ APP_VER_SECOND = $$system($$BASE_GIT_COMMAND 2> $$NULL_DEVICE)
 
 # Adding C preprocessor #DEFINE so we can use it in C++ code
 # also here we want full version on every system so using GIT_VERSION
-DEFINES += APP_VER_FIRST=\\\"$$APP_VER_FIRST\\\"
 DEFINES += APP_VER_SECOND=\\\"$$APP_VER_SECOND\\\"
 
 #message($$APP_VER_FIRST)

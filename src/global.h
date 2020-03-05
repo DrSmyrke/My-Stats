@@ -42,6 +42,8 @@ struct SendData{
 struct Config{
 	bool showData			= true;
 	bool verbose			= true;
+	bool daemonMode			= false;
+	bool stopMode			= false;
 	uint8_t logLevel		= 3;
 #ifdef __linux__
 	QString logFile			= "/tmp/MyStats.log";

@@ -37,13 +37,17 @@ namespace app {
 				if(QString(argv[i]) == "--help" or QString(argv[1]) == "-h"){
 					printf("Usage: %s [OPTIONS]\n"
 							"  -l <FILE>    log file\n"
-							"  -v    Verbose output\n"
+							"  -v		Verbose output\n"
+							"  -d		Daemon mode\n"
+							"  --stop    Stop daemon\n"
 							"  --version	print current version\n"
 							"\n", argv[0]);
 					ret = false;
 				}
 				if(QString(argv[i]) == "-l") app::conf.logFile = QString(argv[++i]);
 				if(QString(argv[i]) == "-v") app::conf.verbose = true;
+				if(QString(argv[i]) == "-d") app::conf.daemonMode = true;
+				if(QString(argv[i]) == "--stop") app::conf.stopMode = true;
 				if(QString(argv[i]) == "--version"){
 					printf( "%s\n", app::conf.version.toUtf8().data() );
 					ret = false;

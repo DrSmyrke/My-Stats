@@ -11,6 +11,7 @@ class Core : public QObject
 	Q_OBJECT
 public:
 	explicit Core(QObject *parent = nullptr);
+	~Core();
 	void init();
 private slots:
 	void slot_update();

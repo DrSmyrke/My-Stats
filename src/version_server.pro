@@ -19,6 +19,7 @@ build_pass:CONFIG(debug, debug|release) {
 }
 
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += APP_NAME=\\\"$$TARGET\\\"
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -51,7 +52,8 @@ HEADERS  += hwmonitor.h \
 #    ../../../HomeNET/myproto.h \
 #    ../../../HomeNET/searcher.h \
     myfunctions.h \
-    core.h
+    core.h \
+    version.h
 
 TRANSLATIONS = lang/ru_RU.ts
 

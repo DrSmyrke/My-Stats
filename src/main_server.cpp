@@ -27,15 +27,17 @@ int main(int argc, char *argv[])
 	app::loadSettings();
 	if( !app::parsArgs(argc, argv) ) return 0;
 
+	int pid = -1;
+
 	if( app::conf.stopMode ){
 		if( !QDir( "/proc" ).exists() ){
 			printf( "/proc path not found!!!\n" );
 			return EXIT_FAILURE;
 		}
 
-		auto pid = mf::pidOfProc( APP_NAME );
+		pid = mf::pidOfProc( APP_NAME );
 		if( pid != -1 ){
-			printf( "Stopping %s [%d] ...\n", APP_NAME, pid );
+			printf( "Stopping %s PID: [%d] ...\n", APP_NAME, pid );
 			kill( pid, SIGTERM );
 		}
 
@@ -60,7 +62,14 @@ int main(int argc, char *argv[])
 	signal(SIGINT, signalExitHandler);
 
 	if( app::conf.daemonMode ){
-		auto pid = fork();
+
+		pid = mf::pidOfProc( APP_NAME );
+		if( pid != -1 ){
+			printf( "Daemon is running %s PID: [%d] ...\n", APP_NAME, pid );
+			return EXIT_FAILURE;
+		}
+
+		pid = fork();
 		if (pid < 0) exit(EXIT_FAILURE);
 		if (pid > 0) exit(EXIT_SUCCESS);
 		signal( SIGCHLD, SIG_IGN );

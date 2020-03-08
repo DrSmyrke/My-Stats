@@ -11,9 +11,9 @@ fi
 
 
 cd src
-qmake version_desktop.pro
-make
-make clean
-qmake version_server.pro
-make
+qmake version_desktop.pro || exit 1
+make || exit 1
+make clean || exit 1
+qmake version_server.pro || exit 1
+make || exit 1
 cd ..

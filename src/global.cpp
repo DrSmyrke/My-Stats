@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <QSettings>
 #include <QNetworkAccessManager>
+#include <QNetworkRequest>
 #include <QUrlQuery>
 
 namespace app {

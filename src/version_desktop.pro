@@ -34,7 +34,7 @@ win32|win64{
 }
 QMAKE_CXXFLAGS += "-std=c++11"
 
-SOURCES += main_desktop.cpp\
+SOURCES += main.cpp\
         mainwindow.cpp \
     hwmonitorwidget.cpp \
     hwmonitor.cpp \

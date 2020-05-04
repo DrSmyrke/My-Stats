@@ -36,6 +36,8 @@ public slots:
 signals:
 	void signal_heightChangeRequest(const uint16_t newValue);
 	void signal_diskClicked( const QString &path, const QString &name );
+private slots:
+	void slot_startSwap();
 protected:
 	void paintEvent(QPaintEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;

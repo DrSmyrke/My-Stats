@@ -46,7 +46,7 @@ struct Config{
 	bool stopMode			= false;
 	uint8_t logLevel		= 3;
 #ifdef __linux__
-	QString logFile			= "/tmp/MyStats.log";
+	QString logFile			= "";
 #elif _WIN32
 	QString logFile			= QDir::homePath() + "/MyStats.log";
 #endif

@@ -16,6 +16,11 @@ void HWMonitorWidget::slot_update()
 	if( m_heightChangeF ) emit signal_heightChangeRequest( m_prewY );
 }
 
+void HWMonitorWidget::slot_startSwap()
+{
+	mf::startDetached( "pkexec", QStringList() << "swapon" << "-a" );
+}
+
 void HWMonitorWidget::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
@@ -202,9 +207,7 @@ bool HWMonitorWidget::mouseClickToObject()
 	if( m_swapParam.clear ){
 		if( chkHoverSwap( m_swapParam.y ) ){
 			if( mf::startDetached( "pkexec", QStringList() << "swapoff" << "-a" ) ){
-				QTimer::singleShot( 3000, this, [this](){
-					mf::startDetached( "pkexec", QStringList() << "swapon" << "-a" );
-				} );
+				QTimer::singleShot( 3000, this, SLOT(slot_startSwap()) );
 			}
 			m_swapParam.hover = false;
 			find = true;

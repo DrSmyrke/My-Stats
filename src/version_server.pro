@@ -20,6 +20,7 @@ build_pass:CONFIG(debug, debug|release) {
 
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += APP_NAME=\\\"$$TARGET\\\"
+DEFINES += SERVER_VERSION
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -37,7 +38,7 @@ win32|win64{
 }
 QMAKE_CXXFLAGS += "-std=c++11"
 
-SOURCES += main_server.cpp\
+SOURCES += main.cpp\
     hwmonitor.cpp \
     global.cpp \
 #    ../../../HomeNET/client.cpp \

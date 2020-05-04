@@ -39,15 +39,15 @@ namespace app {
 					printf("Usage: %s [OPTIONS]\n"
 							"  -l <FILE>    log file\n"
 							"  -v		Verbose output\n"
-							"  -d		Daemon mode\n"
-							"  --stop    Stop daemon\n"
+							"  -d. --daemon		Daemon mode\n"
+							"  --stop    			Stop daemon\n"
 							"  --version	print current version\n"
 							"\n", argv[0]);
 					ret = false;
 				}
 				if(QString(argv[i]) == "-l") app::conf.logFile = QString(argv[++i]);
 				if(QString(argv[i]) == "-v") app::conf.verbose = true;
-				if(QString(argv[i]) == "-d") app::conf.daemonMode = true;
+				if(QString(argv[i]) == "--daemon" || QString(argv[i]) == "-d") app::conf.daemonMode = true;
 				if(QString(argv[i]) == "--stop") app::conf.stopMode = true;
 				if(QString(argv[i]) == "--version"){
 					printf( "%s\n", app::conf.version.toUtf8().data() );
@@ -60,8 +60,11 @@ namespace app {
 
 	void loadSettings()
 	{
-		QSettings settings("MySoft","MyStats");
-
+#ifdef SERVER_VERSION
+		QSettings settings( "/etc/DrSmyrke/MyStats.ini", QSettings::IniFormat );
+#else
+		QSettings settings( "MySoft","MyStats" );
+#endif
 		app::conf.logFile = settings.value("MAIN/logFile",app::conf.logFile).toString();
 		app::conf.apiKey = settings.value("MAIN/apiKey",app::conf.apiKey).toString();
 		app::conf.targetUrl = settings.value("MAIN/targetUrl",app::conf.targetUrl).toString();
@@ -73,7 +76,11 @@ namespace app {
 
 	void saveSettings()
 	{
-		QSettings settings("MySoft","MyStats");
+#ifdef SERVER_VERSION
+		QSettings settings( "/etc/DrSmyrke/MyStats.ini", QSettings::IniFormat );
+#else
+		QSettings settings( "MySoft","MyStats" );
+#endif
 		settings.clear();
 		settings.setValue("MAIN/logFile",app::conf.logFile);
 		settings.setValue("MAIN/apiKey",app::conf.apiKey);

@@ -5,24 +5,6 @@
 #include "global.h"
 #include "myfunctions.h"
 
-struct Iface{
-	QString ip;
-	QString mac;
-	QString name;
-
-#if __WORDSIZE == 64
-	uint64_t upload = 0;
-	uint64_t download = 0;
-	uint64_t uploadSpeed = 0;
-	uint64_t downloadSpeed = 0;
-#else
-	uint32_t upload = 0;
-	uint32_t download = 0;
-	uint32_t uploadSpeed = 0;
-	uint32_t downloadSpeed = 0;
-#endif
-};
-
 struct UiData{
 	QString time = "00:00:00";
 	QString uptime = "00:00:00";

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT		+= core gui network
+QT		+= core network
 QT		-= gui widgets
 
 TARGET = mystatsd
@@ -41,6 +41,7 @@ QMAKE_CXXFLAGS += "-std=c++11"
 SOURCES += main.cpp\
     hwmonitor.cpp \
     global.cpp \
+    api.cpp \
 #    ../../../HomeNET/client.cpp \
 #    ../../../HomeNET/myproto.cpp \
 #    ../../../HomeNET/searcher.cpp \
@@ -49,6 +50,7 @@ SOURCES += main.cpp\
 
 HEADERS  += hwmonitor.h \
     global.h \
+    api.h \
 #    ../../../HomeNET/client.h \
 #    ../../../HomeNET/myproto.h \
 #    ../../../HomeNET/searcher.h \

@@ -2,10 +2,16 @@
 #include <QDateTime>
 #include <QDir>
 #include <QFile>
-#include <sys/statfs.h>    /* or <sys/vfs.h> */
-#include <sys/ioctl.h>
-#include <arpa/inet.h>
-#include <net/if.h>
+
+#ifdef __linux__
+	#include <sys/statfs.h>    /* or <sys/vfs.h> */
+	#include <sys/ioctl.h>
+	#include <arpa/inet.h>
+	#include <net/if.h>
+#elif _WIN32
+
+#endif
+
 #include <unistd.h>
 
 HWMonitor::HWMonitor(QObject *parent) : QObject(parent)
@@ -171,6 +177,7 @@ void HWMonitor::getProcess()
 		if( elem.toInt() > 0 ) count++;
 	}
 	m_data.procCount = QString::number(count);
+	m_sendData.process = count;
 }
 
 void HWMonitor::getIfaces()
@@ -243,8 +250,9 @@ void HWMonitor::getIfaces()
 			}
 		}
 		if(!find) m_data.ifaces.push_back(iface);
-
 	}
+
+	m_sendData.ifaces = m_data.ifaces;
 }
 
 void HWMonitor::getDevs()

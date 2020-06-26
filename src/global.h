@@ -20,6 +20,24 @@ struct Disk{
 	float usedPrz = 0;
 };
 
+struct Iface{
+	QString ip;
+	QString mac;
+	QString name;
+
+#if __WORDSIZE == 64
+	uint64_t upload = 0;
+	uint64_t download = 0;
+	uint64_t uploadSpeed = 0;
+	uint64_t downloadSpeed = 0;
+#else
+	uint32_t upload = 0;
+	uint32_t download = 0;
+	uint32_t uploadSpeed = 0;
+	uint32_t downloadSpeed = 0;
+#endif
+};
+
 struct SendData{
 #if __WORDSIZE == 64
 	uint64_t memTotal		= 0;
@@ -35,7 +53,9 @@ struct SendData{
 	uint8_t mem				= 0;
 	uint8_t swap			= 0;
 	uint8_t cpu				= 0;
+	uint16_t process		= 0;
 	std::vector<Disk> disks;
+	std::vector<Iface> ifaces;
 	QString uptime;
 };
 
@@ -53,7 +73,7 @@ struct Config{
 	QString version;
 	QString apiKey;
 	uint16_t sendInterval	= 0;
-	QString targetUrl;
+	QString apiUrl;
 };
 
 namespace app {

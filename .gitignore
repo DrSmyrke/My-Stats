@@ -6,4 +6,6 @@ bin*
 build
 myfunctions.cpp
 myfunctions.h
-
+api.cpp
+api.h
+Makefile

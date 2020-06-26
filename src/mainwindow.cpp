@@ -115,8 +115,8 @@ void MainWindow::setWindowAction()
 
 void MainWindow::sendStats()
 {
-	if( app::conf.targetUrl.isEmpty() ){
-		app::setLog( 2, "MainWindow::sendStats	conf.targetUrl.isEmpty" );
+	if( app::conf.apiUrl.isEmpty() ){
+		app::setLog( 2, "MainWindow::sendStats	conf.apiUrl.isEmpty" );
 		return;
 	}
 

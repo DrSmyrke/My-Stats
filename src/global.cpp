@@ -1,10 +1,10 @@
 #include "global.h"
+#include "api.h"
+
 #include <QIODevice>
 #include <QDateTime>
 #include <QSettings>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QUrlQuery>
+#include <QHostInfo>
 
 namespace app {
 	Config conf;
@@ -67,7 +67,7 @@ namespace app {
 #endif
 		app::conf.logFile = settings.value("MAIN/logFile",app::conf.logFile).toString();
 		app::conf.apiKey = settings.value("MAIN/apiKey",app::conf.apiKey).toString();
-		app::conf.targetUrl = settings.value("MAIN/targetUrl",app::conf.targetUrl).toString();
+		app::conf.apiUrl = settings.value("MAIN/apiUrl",app::conf.apiUrl).toString();
 		app::conf.logLevel = settings.value("MAIN/logLevel",app::conf.logLevel).toUInt();
 		app::conf.sendInterval = settings.value("MAIN/sendInterval",app::conf.sendInterval).toInt();
 
@@ -84,34 +84,32 @@ namespace app {
 		settings.clear();
 		settings.setValue("MAIN/logFile",app::conf.logFile);
 		settings.setValue("MAIN/apiKey",app::conf.apiKey);
-		settings.setValue("MAIN/targetUrl",app::conf.targetUrl);
+		settings.setValue("MAIN/apiUrl",app::conf.apiUrl);
 		settings.setValue("MAIN/logLevel",app::conf.logLevel);
 		settings.setValue("MAIN/sendInterval",app::conf.sendInterval);
 	}
 
 	void sendData(const SendData &data)
 	{
-		QNetworkAccessManager manager;
-		QUrl url( app::conf.targetUrl );
-		QNetworkRequest request( url );
-		QString auth = QString( "%1:%2" ).arg( "api" ).arg( app::conf.apiKey );
-		request.setRawHeader( "Authorization", "Basic " + auth.toUtf8().toBase64() );
-		request.setHeader( QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded" );
-
-		QUrlQuery params;
-		params.addQueryItem( "cpu", QString::number( data.cpu ) );
-		params.addQueryItem( "mem", QString::number( data.mem ) );
-		params.addQueryItem( "memTotal", QString::number( data.memTotal ) );
-		params.addQueryItem( "memFree", QString::number( data.memFree ) );
-		params.addQueryItem( "swap", QString::number( data.swap ) );
-		params.addQueryItem( "swapTotal", QString::number( data.swapTotal ) );
-		params.addQueryItem( "swapFree", QString::number( data.swapFree ) );
-		params.addQueryItem( "uptime", data.uptime );
-		//TODO: DISKS
-
-		manager.post( request, params.query().toUtf8() );
+		API::Request request;
 		
-		//TODO: post JsonData
+		request.url = app::conf.apiUrl;
+		request.method = API::Method::POST;
+		request.dataType = API::DataType::JSON;
+		request.dataList[ "key" ]			= app::conf.apiKey;
+		request.dataList[ "name" ]			= QHostInfo::localHostName();
+		request.dataList[ "uptime" ]		= data.uptime;
+		request.dataList[ "cpu" ]			= data.cpu;
+		request.dataList[ "ram_total" ]		= QString::number( data.memTotal );
+		request.dataList[ "ram_used" ]		= QString::number( data.mem );
+		request.dataList[ "swap_total" ]	= QString::number( data.swapTotal );
+		request.dataList[ "swap_used" ]		= QString::number( data.swap );
+		request.dataList[ "process" ]		= data.process;
+		
+		//TODO: DISKS & ifaces
+		//request.dataList[ "disks" ] = "disks JSON data";
+		
+		API::sendRequest( request );
 	}
 
 }

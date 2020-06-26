@@ -39,6 +39,7 @@ SOURCES += main.cpp\
     hwmonitorwidget.cpp \
     hwmonitor.cpp \
     global.cpp \
+    api.cpp \
 #    ../../../HomeNET/client.cpp \
 #    ../../../HomeNET/myproto.cpp \
 #    ../../../HomeNET/searcher.cpp \
@@ -47,6 +48,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     hwmonitorwidget.h \
     hwmonitor.h \
+    api.h \
     global.h \
 #    ../../../HomeNET/client.h \
 #    ../../../HomeNET/myproto.h \

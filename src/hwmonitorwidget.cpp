@@ -141,7 +141,7 @@ void HWMonitorWidget::paintEvent(QPaintEvent *event)
 		if( name != "/" ){
 			auto tmp = name.split("/");
 			if( tmp.size() > 0 ) name = tmp[tmp.size() - 1];
-			if( name.length() > 5 ) name = name.left(4) + "...";
+			if( name.length() > 7 ) name = name.left(5) + "...";
 		}
 
 		if( name != "/" ){

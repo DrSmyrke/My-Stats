@@ -293,7 +293,8 @@ void HWMonitor::getDevs()
 				|| disk.fstype == "pstore" || disk.fstype == "binfmt_misc" || disk.fstype == "mqueue"
 				|| disk.fstype == "fuse.gvfsd-fuse" || disk.fstype == "securityfs" || disk.fstype == "hugetlbfs"
 				|| disk.fstype == "cgroup" || disk.fstype == "cgroup2" || disk.fstype == "devpts"
-				|| disk.fstype == "configfs") continue;
+				|| disk.fstype == "configfs" || disk.fstype == "fuse" || disk.fstype == "tracefs"
+				|| disk.fstype == "bpf" ) continue;
 		disk.name = tmp[9];
 		disk.size = fs.f_bsize * fs.f_blocks;
 		disk.avail = fs.f_bsize * fs.f_bavail;

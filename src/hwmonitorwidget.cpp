@@ -285,15 +285,18 @@ void HWMonitorWidget::drawBar(QPainter &p, const uint16_t x, const uint16_t y, c
 
 bool HWMonitorWidget::chkHoverIface(const uint16_t y)
 {
+	if( !app::conf.showData ) return false;
 	return (m_mouse.y() >= y && m_mouse.y() < y + 14) ? true : false;
 }
 
 bool HWMonitorWidget::chkHoverDisk(const uint16_t y)
 {
+	if( !app::conf.showData ) return false;
 	return (m_mouse.y() >= y && m_mouse.y() < y + 28 ) ? true : false;
 }
 
 bool HWMonitorWidget::chkHoverSwap(const uint16_t y)
 {
+	if( !app::conf.showData ) return false;
 	return (m_mouse.y() >= y && m_mouse.y() < y + 14) ? true : false;
 }

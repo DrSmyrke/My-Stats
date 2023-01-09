@@ -286,19 +286,28 @@ void HWMonitor::getDevs()
 		if( statfs( tmp[4].data(), &fs ) != 0 ) continue;
 
 		Disk disk;
+		disk.mount = tmp[4];
 		disk.fstype = tmp[8];
-		if( disk.fstype == "tmpfs" || disk.fstype == "debugfs" || disk.fstype == "fusectl"
-				|| disk.fstype == "fusectl" || disk.fstype == "proc" || disk.fstype == "efivarfs"
-				|| disk.fstype == "sysfs" || disk.fstype == "devtmpfs" || disk.fstype == "autofs"
-				|| disk.fstype == "pstore" || disk.fstype == "binfmt_misc" || disk.fstype == "mqueue"
-				|| disk.fstype == "fuse.gvfsd-fuse" || disk.fstype == "securityfs" || disk.fstype == "hugetlbfs"
-				|| disk.fstype == "cgroup" || disk.fstype == "cgroup2" || disk.fstype == "devpts"
-				|| disk.fstype == "configfs" || disk.fstype == "fuse" || disk.fstype == "tracefs"
-				|| disk.fstype == "bpf" ) continue;
+		if(
+				disk.fstype == "tmpfs" || disk.fstype == "ramfs" || disk.fstype == "nsfs" || disk.fstype == "configfs" || disk.fstype == "bpf"
+				 || disk.fstype == "autofs" || disk.fstype == "sysfs" || disk.fstype == "proc" || disk.fstype == "cgroup2" || disk.fstype == "pstore"
+				 || disk.fstype == "debugfs" || disk.fstype == "tracefs" || disk.fstype == "fusectl" || disk.fstype == "mqueue"
+				 || disk.fstype == "securityfs" || disk.fstype == "hugetlbfs" || disk.fstype == "efivarfs" || disk.fstype == "devpts"
+				 || disk.fstype == "binfmt_misc"
+				 || disk.mount.indexOf( "/snap/" ) >= 0
+		) continue;
+//		if(
+//				|| disk.fstype == "fusectl"
+//				 || disk.fstype == "devtmpfs"
+//
+//				|| disk.fstype == "fuse.gvfsd-fuse"
+//				|| disk.fstype == "cgroup"
+//				 || disk.fstype == "fuse"
+//				 || disk.fstype == "squashfs" ) continue;
 		disk.name = tmp[9];
 		disk.size = fs.f_bsize * fs.f_blocks;
 		disk.avail = fs.f_bsize * fs.f_bavail;
-		disk.mount = tmp[4];
+
 		disk.used = disk.size - disk.avail;
 		disk.usedPrz = (float)disk.used / ( (float)disk.size / 100.0 );
 		m_data.disks.push_back(disk);

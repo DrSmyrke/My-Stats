@@ -41,20 +41,16 @@ QMAKE_CXXFLAGS += "-std=c++11"
 SOURCES += main.cpp\
     hwmonitor.cpp \
     global.cpp \
-    api.cpp \
 #    ../../../HomeNET/client.cpp \
 #    ../../../HomeNET/myproto.cpp \
 #    ../../../HomeNET/searcher.cpp \
-    myfunctions.cpp \
     core.cpp
 
 HEADERS  += hwmonitor.h \
     global.h \
-    api.h \
 #    ../../../HomeNET/client.h \
 #    ../../../HomeNET/myproto.h \
 #    ../../../HomeNET/searcher.h \
-    myfunctions.h \
     core.h \
     version.h
 

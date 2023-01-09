@@ -15,8 +15,7 @@ CONFIG(debug, debug|release):CONFIGURATION=debug
 CONFIG(release, debug|release):CONFIGURATION=release
 
 build_pass:CONFIG(debug, debug|release) {
-    unix: TARGET = $$join(TARGET,,,_debug)
-    else: TARGET = $$join(TARGET,,,d)
+    TARGET = $$join(TARGET,,,_debug)
 }
 
 CONFIG += c++11
@@ -38,22 +37,18 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     hwmonitorwidget.cpp \
     hwmonitor.cpp \
-    global.cpp \
-    api.cpp \
 #    ../../../HomeNET/client.cpp \
 #    ../../../HomeNET/myproto.cpp \
 #    ../../../HomeNET/searcher.cpp \
-    myfunctions.cpp
+    global.cpp
 
 HEADERS  += mainwindow.h \
     hwmonitorwidget.h \
     hwmonitor.h \
-    api.h \
-    global.h \
 #    ../../../HomeNET/client.h \
 #    ../../../HomeNET/myproto.h \
 #    ../../../HomeNET/searcher.h \
-    myfunctions.h
+    global.h
 
 TRANSLATIONS = lang/ru_RU.ts
 
